@@ -1,6 +1,6 @@
 #!usr/bin/python3
 """
-Test module for base model class
+    Test module for BaseModel class.
 """
 from models.base_model import BaseModel
 import unittest
@@ -9,18 +9,18 @@ import datetime
 
 class TestBaseModel(unittest.TestCase):
     """
-    test class for base_model class
+        test class for base_model class.
     """
 
     def test_empty(self):
         """
-        test class with no arguments
+            test class instantiation with no arguments.
         """
         m1 = BaseModel()
 
     def test_id_unique(self):
         """
-        tests if an id is unique
+            tests if an id is unique.
         """
         m1 = BaseModel()
         m2 = BaseModel()
@@ -28,14 +28,14 @@ class TestBaseModel(unittest.TestCase):
 
     def test_id_type(self):
         """
-        tests if generated id is of type string
+            tests if generated id is of type string.
         """
         m1 = BaseModel()
         self.assertEqual(type(m1.id), str)
 
     def test_change_id(self):
         """
-        tests when id is changed manually
+            tests when id is changed manually.
         """
         m1 = BaseModel()
         m2 = BaseModel()
@@ -44,22 +44,22 @@ class TestBaseModel(unittest.TestCase):
 
     def test_type_created_at(self):
         """
-        tests the type of attribute created_at
+            tests the type of attribute created_at.
         """
         m1 = BaseModel()
         self.assertEqual(type(m1.created_at), datetime)
 
     def test_type_updated_at(self):
         """
-        tests the type of attribute updated_at
+            tests the type of attribute updated_at.
         """
         m1 = BaseModel()
         self.assertEqual(type(m1.updated_at), datetime)
 
     def test_created_updated_compared(self):
         """
-        tests that created at is not greater than updated at
-        when instantiated and when updated
+            tests that created at is not greater than updated at
+            when instantiated and when updated.
         """
         m1 = BaseModel()
         self.assertEqual(m1.updated_at, m1.created_at)
@@ -70,8 +70,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_createdat_two_objects(self):
         """
-        tests that created_at is greater for a second created
-        object than the first
+            tests that created_at is greater for a second created
+            object than the first.
         """
         m1 = BaseModel()
         m2 = BaseModel()
@@ -81,7 +81,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_str_return(self):
         """
-        tests the str return of class BaseModel
+            tests the str return of class BaseModel.
         """
         m1 = BaseModel()
         class_name = "BaseModel"
@@ -92,7 +92,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_str_return_new_id(self):
         """
-        tests that str will update with an updated id
+            tests that str will update with an updated id.
         """
         m1 = BaseModel()
         class_name = "BaseModel"
@@ -103,8 +103,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_save(self):
         """
-        tests the save method and if the updated_at is greater than
-        the created_at attribute after update
+            tests the save method and if the updated_at is
+            greater than the created_at attribute after update.
         """
         m1 = BaseModel()
         date1 = m1.created_at
@@ -114,7 +114,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_to_dict(self):
         """
-        tests the method to_dict and if it matches self.__dict__
+            tests the method to_dict and if it matches self.__dict__.
         """
         m1 = BaseModel()
         self.assertDictContainsSubset(m1.__dict__, m1.to_dict)
@@ -123,8 +123,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_to_dict_createdupdated(self):
         """
-        tests if to_dict contains str iso of created_at and updated_at
-        public attributes
+            tests if to_dict contains str iso of created_at
+            and updated_at public attributes.
         """
         m1 = BaseModel()
         date1 = m1.updated_at.isoformat()
