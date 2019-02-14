@@ -86,7 +86,7 @@ class TestBaseModel(unittest.TestCase):
         m1 = BaseModel()
         class_name = "BaseModel"
         m1_id = str(m1.id)
-        m1_dict = str(sorted(m1.__dict__))
+        m1_dict = str(m1.__dict__)
         str_m1 = "[{}] ({}) {}".format(class_name, m1_id, m1_dict)
         self.assertEqual(str_m1, str(m1))
 
@@ -97,7 +97,7 @@ class TestBaseModel(unittest.TestCase):
         m1 = BaseModel()
         class_name = "BaseModel"
         m1.id = "1"
-        m1_dict = str(sorted(m1.__dict__))
+        m1_dict = str(m1.__dict__)
         str_m1 = "[{}] (1) {}".format(class_name, m1_dict)
         self.assertEqual(str_m1, str(m1))
 
