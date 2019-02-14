@@ -4,7 +4,7 @@
 """
 from models.base_model import BaseModel
 import unittest
-import datetime
+from datetime import datetime
 
 
 class TestBaseModel(unittest.TestCase):
