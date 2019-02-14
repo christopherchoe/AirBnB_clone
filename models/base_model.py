@@ -4,6 +4,7 @@
 """
 from datetime import datetime
 import uuid
+from base_model import storage
 
 
 class BaseModel:
@@ -24,6 +25,7 @@ class BaseModel:
                 elif key is not "__class__":
                     self.__dict__[key] = value
         else:
+            storage.new()
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
@@ -39,6 +41,7 @@ class BaseModel:
         """
             Updates `updated_at`.
         """
+        storage.save()
         self.updated_at = datetime.now()
 
     def to_dict(self):
