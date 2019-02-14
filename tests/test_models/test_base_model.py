@@ -118,7 +118,8 @@ class TestBaseModel(unittest.TestCase):
         """
         m1 = BaseModel()
         class_dict = {"id": m1.id, "__class__": "BaseModel"}
-        self.assertTrue(set(class_dict.items()).issubset(set(m1.to_dict().items())))
+        self.assertTrue(set(class_dict.items()).issubset(
+                        set(m1.to_dict().items())))
 
     def test_to_dict_createdupdated(self):
         """
@@ -129,5 +130,25 @@ class TestBaseModel(unittest.TestCase):
         date1 = m1.updated_at.isoformat()
         date2 = m1.created_at.isoformat()
         class_dict = {"updated_at": date1, "created_at": date2}
-        self.assertTrue(set(class_dict.items()).issubset(set(m1.to_dict().items())))
+        self.assertTrue(set(class_dict.items()).issubset(
+                        set(m1.to_dict().items())))
 
+    def test_copy_from_dict(self):
+        """
+            tests if copy made from to_dict has same __dict__ as
+            the class it was copied from.
+        """
+        m1 = BaseModel()
+        m2 = BaseModel(**m1.to_dict())
+        self.assertTrue(set(m1.__dict__.items()).issubset(
+                        set(m2.__dict__.items())))
+
+    def test_copy_kwargs_none(self):
+        """
+            tests when kwargs is none in a class instantiation.
+        """
+        m1 = BaseModel()
+        testing = {}
+        m2 = BaseModel(**testing)
+        self.assertFalse(set(m1.__dict__.items()).issubset(
+                        set(m2.__dict__.items())))
