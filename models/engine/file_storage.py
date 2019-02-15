@@ -25,7 +25,8 @@ class FileStorage:
             Args:
                 obj: (:obj:`BaseModel`): A `BaseModel` instance.
         """
-        FileStorage.__objects[obj.__class__.__name__ + '.' + obj.id] = obj.to_dict()
+        FileStorage.__objects[obj.__class__.__name__ + '.' + obj.id] =
+        obj.to_dict()
 
     def save(self):
         """
