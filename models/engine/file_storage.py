@@ -31,8 +31,11 @@ class FileStorage:
         """
             Serializes `__object` to the JSON file specified by `__file_path`.
         """
-        with open(FileStorage.__file_path, 'w') as f:
-            json.dump(FileStorage.__objects, f)
+        try:
+            with open(FileStorage.__file_path, 'w') as f:
+                json.dump(FileStorage.__objects, f)
+        except IOError:
+            pass
 
     def reload(self):
         """
@@ -42,5 +45,5 @@ class FileStorage:
         try:
             with open('file.json', 'r') as f:
                 FileStorage.__objects = json.load(f)
-        except:
+        except IOError:
             pass
