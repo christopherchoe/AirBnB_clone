@@ -18,11 +18,11 @@ class BaseModel:
         form = "%Y-%m-%dT%H:%M:%S.%f"
         if kwargs and len(kwargs) is not 0:
             for key, value in kwargs.items():
-                if key is "updated_at":
+                if key == "updated_at":
                     self.updated_at = datetime.strptime(value, form)
-                elif key is "created_at":
+                elif key == "created_at":
                     self.created_at = datetime.strptime(value, form)
-                elif key is not "__class__":
+                elif key != "__class__":
                     self.__dict__[key] = value
         else:
             self.id = str(uuid.uuid4())
