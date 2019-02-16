@@ -37,6 +37,21 @@ class BaseModel:
         return '[{}] ({}) {}'.format(self.__class__.__name__, self.id,
                                      self.__dict__)
 
+    def __setattr__(self, var, val):
+        """Checks if `var` is a class variable in `self`, if so add it into
+        `self.__dict__` after casting it into the correct type based on the
+        class variable's type. Otherwise add var and val like normal.
+
+        Args:
+            var: The variable key to add into __dict__
+            val: The corresponding value to add into __dict__
+        """
+        cl_dict = self.__class__.__dict__
+        if var in cl_dict:
+            self.__dict__[var] = type(cl_dict[var])(val)
+        else:
+            self.__dict__[var] = val
+
     def save(self):
         """
             Updates `updated_at`.
