@@ -5,6 +5,7 @@
 import cmd
 import shlex
 
+
 class HBNBCommand(cmd.Cmd):
     """
         The ``HBNBCommand`` class which inherits from ``cmd`` class.
@@ -37,9 +38,9 @@ class HBNBCommand(cmd.Cmd):
         """Displays the string representation of an instance based on class
         name and instance id:  show BaseModel 1234-1234-1234
         """
-        key = HBNBCommand.check_class(arg)
-        if key is not None:
-            val = storage.all()[key]
+        key_str = HBNBCommand.check_class(arg)
+        if key_str is not None:
+            val = storage.all()[key_str[0]]
             obj = BaseModel(**val)
             print(obj)
 
@@ -47,9 +48,9 @@ class HBNBCommand(cmd.Cmd):
         """Destroys an instance based on class name and instance id:  destory
         BaseModel 1234-1234-1234
         """
-        key = HBNBCommand.check_class(arg)
-        if key is not None:
-            del storage.all()[key]
+        key_str = HBNBCommand.check_class(arg)
+        if key_str is not None:
+            del storage.all()[key_str[0]]
             storage.save()
 
     def do_all(self, arg):
@@ -75,8 +76,44 @@ class HBNBCommand(cmd.Cmd):
 
         print(inst_list)
 
+    def do_update(self, arg):
+        """Updates instance based on classname and id by adding/updating an
+        attribute
+        """
+        key_str = HBNBCommand.check_class(arg)
+        if key_str is None:
+            return
+        s = key_str[1]
+        s_len = len(s)
+        if s_len < 3:
+            print('** attribute name missing **')
+            return
+        elif s_len < 4:
+            print('** value missing **')
+            return
+        obj = BaseModel(**(storage.all()[key_str[0]]))
+        attr = s[2]
+        val = s[3]
+        if attr in obj.__dict__.keys():
+            if type(obj.__dict__[attr]) is str:
+                obj.__dict__[attr] = val
+            elif type(obj.__dict__[attr]) is int:
+                obj.__dict__[attr] = int(val)
+            elif type(obj.__dict__[attr]) is float:
+                obj.__dict__[attr] = float(val)
+        else:
+            obj.__dict__[attr] = val
+        storage.all()[key_str[0]] = obj.to_dict()
+        storage.save()
+
     @staticmethod
     def check_class(arg):
+        """Check if arg contains, a valid class, and id.
+
+        Returns:
+            A tuple containing the key(classname.id) and parsed arg.
+            None if arg does not contain a valid class, and id.
+        """
         s = shlex.split(arg)
         slen = len(s)
         if slen is 0:
@@ -95,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
             print('** no instance found **')
             return None
 
-        return key
+        return (key, s)
 
     do_EOF = do_quit
 
