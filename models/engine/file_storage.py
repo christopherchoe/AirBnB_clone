@@ -3,6 +3,14 @@
     Module containing the ``FileStorage`` class.
 """
 import json
+import models
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.city import City
+from models.state import State
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
@@ -26,7 +34,7 @@ class FileStorage:
                 obj: (:obj:`BaseModel`): A `BaseModel` instance.
         """
         key_obj = obj.__class__.__name__ + '.' + obj.id
-        FileStorage.__objects[key_obj] = obj.to_dict()
+        FileStorage.__objects[key_obj] = obj
 
     def save(self):
         """
@@ -34,7 +42,10 @@ class FileStorage:
         """
         try:
             with open(FileStorage.__file_path, 'w') as f:
-                json.dump(FileStorage.__objects, f)
+                obj_dict = {}
+                for key, val in FileStorage.__objects.items():
+                    obj_dict[key] = val.to_dict()
+                json.dump(obj_dict, f)
         except IOError:
             pass
 
@@ -45,6 +56,8 @@ class FileStorage:
         """
         try:
             with open('file.json', 'r') as f:
-                FileStorage.__objects = json.load(f)
-        except IOError:
+                all_obj = json.load(f)
+                for key, val in all_obj.items():
+                    FileStorage.__objects[key] = eval(val["__class__"])(**val)
+        except (IOError, ValueError):
             pass
