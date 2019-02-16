@@ -40,8 +40,7 @@ class HBNBCommand(cmd.Cmd):
         """
         key_str = HBNBCommand.check_class(arg)
         if key_str is not None:
-            val = storage.all()[key_str[0]]
-            obj = BaseModel(**val)
+            obj = storage.all()[key_str[0]]
             print(obj)
 
     def do_destroy(self, arg):
@@ -61,15 +60,14 @@ class HBNBCommand(cmd.Cmd):
         s = shlex.split(arg)
         inst_list = []
         if len(s) is 0:
-            for val in storage.all().values():
-                obj = BaseModel(**val)
+            for obj in storage.all().values():
                 inst_list.append(obj.__str__())
         else:
             try:
                 eval(s[0])
                 for key, val in storage.all().items():
                     if s[0] in key:
-                        inst_list.append(str(BaseModel(**val)))
+                        inst_list.append(val.__str__())
             except (NameError, SyntaxError):
                 print('** class doesn\'t exist **')
                 return
@@ -91,19 +89,19 @@ class HBNBCommand(cmd.Cmd):
         elif s_len < 4:
             print('** value missing **')
             return
-        obj = BaseModel(**(storage.all()[key_str[0]]))
+        obj = storage.all()[key_str[0]]
         attr = s[2]
         val = s[3]
         if attr in obj.__dict__.keys():
             if type(obj.__dict__[attr]) is str:
                 obj.__dict__[attr] = val
+                setattr(obj, attr, val)
             elif type(obj.__dict__[attr]) is int:
                 obj.__dict__[attr] = int(val)
             elif type(obj.__dict__[attr]) is float:
                 obj.__dict__[attr] = float(val)
         else:
             obj.__dict__[attr] = val
-        storage.all()[key_str[0]] = obj.to_dict()
         storage.save()
 
     @staticmethod
@@ -138,6 +136,7 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == '__main__':
     from models.base_model import BaseModel
+    from models.user import User
     from models import storage
     import sys
     if len(sys.argv) is 1:
