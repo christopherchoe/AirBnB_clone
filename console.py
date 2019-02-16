@@ -26,7 +26,10 @@ class HBNBCommand(cmd.Cmd):
         JSON file:  create BaseModel
         """
         try:
-            obj = eval(arg)()
+            clazz = eval(arg)
+            if not isinstance(clazz, type) or not issubclass(clazz, BaseModel):
+                raise NameError
+            obj = clazz()
             print(obj.id)
             obj.save()
         except SyntaxError:
@@ -118,7 +121,9 @@ class HBNBCommand(cmd.Cmd):
             print('** class name missing **')
             return None
         try:
-            eval(s[0])
+            clazz = eval(s[0])
+            if not isinstance(clazz, type) or not issubclass(clazz, BaseModel):
+                raise NameError
         except (NameError, SyntaxError):
             print('** class doesn\'t exist **')
             return None
