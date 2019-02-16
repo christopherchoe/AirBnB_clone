@@ -55,6 +55,7 @@ class FileStorage:
             .
         """
         try:
+            FileStorage.__objects = {}
             with open('file.json', 'r') as f:
                 all_obj = json.load(f)
                 for key, val in all_obj.items():

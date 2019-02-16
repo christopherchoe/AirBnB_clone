@@ -25,6 +25,8 @@ class TestFileStorage(unittest.TestCase):
             pass
         with open('file.json', 'w') as f:
             json.dump({}, f)
+        f1 = FileStorage()
+        f1.reload()
 
     def tearDown(self):
         """
@@ -47,8 +49,9 @@ class TestFileStorage(unittest.TestCase):
             if freshly instantiated.
         """
         f1 = FileStorage()
+        all_before = f1.all()
         f1.reload()
-        self.assertEqual({}, f1.all())
+        self.assertEqual(all_before, f1.all())
 
     def test_filestorage_all_after_new(self):
         """
@@ -56,9 +59,9 @@ class TestFileStorage(unittest.TestCase):
             if new method is called.
         """
         f1 = FileStorage()
-        f1.reload()
         m1 = BaseModel()
-        d1 = {(m1.__class__.__name__ + '.' + m1.id): m1.to_dict()}
+        f1.new(m1)
+        d1 = {(m1.__class__.__name__ + '.' + m1.id): m1}
         self.assertEqual(d1, f1.all())
 
     def test_filestorage_save(self):
@@ -86,9 +89,9 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(TypeError):
             m1 = FileStorage(1, 2, 3, 4)
 
-    def test_empty_reload(self):
+    def test_no_file_reload(self):
         """
-            tests reload if file is empty.
+            tests reload if file is not present.
         """
         try:
             os.remove("file.json")
@@ -98,3 +101,14 @@ class TestFileStorage(unittest.TestCase):
         f1.reload()
         with self.assertRaises(OSError):
             os.remove("file.json")
+
+    def test_empty_reload(self):
+        """
+            tests reload if file is empty.
+        """
+        with open('file.json', 'w') as f:
+            f.write("")
+        f1 = FileStorage()
+        all_before = f1.all()
+        f1.reload()
+        self.assertEqual(all_before, f1.all())
