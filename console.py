@@ -20,7 +20,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, arg):
         """Override precmd."""
-
         cl = re.search(r'^(.*)\.', arg)
         if not cl:
             return arg
@@ -213,4 +212,5 @@ if __name__ == '__main__':
         HBNBCommand().cmdloop()
     else:
         s = ' '.join(sys.argv[1:])
+        s = HBNBCommand().precmd(s)
         HBNBCommand().onecmd(s)
