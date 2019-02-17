@@ -166,4 +166,3 @@ class TestState(unittest.TestCase):
             tests the class attribute name type.
         """
         self.assertEqual(type(State.name), str)
-

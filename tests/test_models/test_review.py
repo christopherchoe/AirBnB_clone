@@ -178,4 +178,3 @@ class TestReview(unittest.TestCase):
             tests the class attribute text type.
         """
         self.assertEqual(type(Review.text), str)
-

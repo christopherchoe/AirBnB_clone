@@ -9,6 +9,4 @@ class Amenity(BaseModel):
     """
         The ``Amenity`` class which inherits from ``BaseModel`` class.
     """
-
-
     name = ""

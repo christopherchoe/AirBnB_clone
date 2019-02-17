@@ -184,4 +184,3 @@ class TestUser(unittest.TestCase):
             tests the class attribute last_name type.
         """
         self.assertEqual(type(User.last_name), str)
-

@@ -226,4 +226,3 @@ class TestPlace(unittest.TestCase):
             tests the class attribute amenity_ids type.
         """
         self.assertEqual(type(Place.amenity_ids), list)
-

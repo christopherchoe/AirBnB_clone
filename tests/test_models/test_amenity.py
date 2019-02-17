@@ -166,4 +166,3 @@ class TestAmenity(unittest.TestCase):
             tests the class attribute name type.
         """
         self.assertEqual(type(Amenity.name), str)
-

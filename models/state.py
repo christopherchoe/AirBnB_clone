@@ -9,6 +9,4 @@ class State(BaseModel):
     """
         The ``State`` class which inherits from ``BaseModel`` class.
     """
-
-
     name = ""

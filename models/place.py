@@ -9,8 +9,6 @@ class Place(BaseModel):
     """
         The ``Place`` class which inherits from ``BaseModel`` class.
     """
-
-
     city_id = ""
     user_id = ""
     name = ""

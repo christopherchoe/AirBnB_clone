@@ -9,8 +9,6 @@ class Review(BaseModel):
     """
         The ``Review`` class which inherits from ``BaseModel`` class.
     """
-
-
     place_id = ""
     user_id = ""
     text = ""

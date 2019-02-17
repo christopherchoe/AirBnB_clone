@@ -9,7 +9,5 @@ class City(BaseModel):
     """
         The ``City`` class which inherits from ``BaseModel`` class.
     """
-
-
     state_id = ""
     name = ""
