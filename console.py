@@ -4,6 +4,8 @@
 """
 import cmd
 import shlex
+import re
+import ast
 
 
 class HBNBCommand(cmd.Cmd):
@@ -15,6 +17,47 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Override emptyline from Cmd."""
         pass
+
+    def precmd(self, arg):
+        """Override precmd."""
+
+        cl = re.search(r'^(.*)\.', arg)
+        if not cl:
+            return arg
+        cl = cl.group(1)
+        try:
+            act = re.search(r'\.(.*?)\(.*\)$', arg)
+            if not act:
+                return arg
+            act = act.group(1)
+            if act == 'count':
+                HBNBCommand.count(cl)
+                return ''
+            par = re.search(r'.*?\((.*)\)$', arg)
+            if not par:
+                return arg
+            par = par.group(1)
+            if act == 'update':
+                temp = shlex.split(par)
+                if len(temp) > 1:
+                    ide = temp[0].strip(',')
+                    if temp[1][0] == '{':
+                        tx = re.search(r'.+,\s+(\{.*?\}).*?', par).group(1)
+                        attr_dict = ast.literal_eval(tx)
+                        key_str = HBNBCommand.check_class(cl + ' ' + ide)
+                        if key_str is None:
+                            return ''
+                        for key, val in attr_dict.items():
+                            self.do_update(cl + ' ' + ide + ' ' + key + ' ' +
+                                           val)
+                        return ''
+                    else:
+                        par = ''
+                        for word in temp:
+                            par = par + ' ' + word.strip(',')
+            return act + ' ' + cl + ' ' + par
+        except (NameError, SyntaxError):
+            return arg
 
     def do_quit(self, arg):
         """Quit command to exit the program:  quit
@@ -106,6 +149,23 @@ class HBNBCommand(cmd.Cmd):
         else:
             obj.__dict__[attr] = val
         storage.save()
+
+    @staticmethod
+    def count(arg):
+        """Get the number of instances of a class"""
+        count = 0
+        try:
+            clazz = eval(arg)
+            if not isinstance(clazz, type) or not issubclass(clazz, BaseModel):
+                raise NameError
+        except (NameError, SyntaxError):
+            print('** class doesn\'t exist **')
+            return
+
+        for key in storage.all().keys():
+            if arg in key:
+                count += 1
+        print(count)
 
     @staticmethod
     def check_class(arg):
