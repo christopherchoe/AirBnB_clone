@@ -5,6 +5,7 @@
 from models.base_model import BaseModel
 import unittest
 from datetime import datetime
+import json
 
 
 class TestBaseModel(unittest.TestCase):
@@ -17,6 +18,18 @@ class TestBaseModel(unittest.TestCase):
             test class instantiation with no arguments.
         """
         m1 = BaseModel()
+
+    def test_init_new(self):
+        """
+            test save method and relation to file storage
+        """
+        m1 = BaseModel()
+        with open('file.json') as f:
+            temp = json.load(f)
+        m1.save()
+        with open('file.json') as f:
+            temp2 = json.load(f)
+        self.assertNotEqual(temp, temp2)
 
     def test_id_unique(self):
         """
