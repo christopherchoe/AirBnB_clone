@@ -18,6 +18,7 @@ class TestBaseModel(unittest.TestCase):
             test class instantiation with no arguments.
         """
         m1 = BaseModel()
+        self.assertIsInstance(m1, BaseModel)
 
     def test_init_new(self):
         """
@@ -166,38 +167,24 @@ class TestBaseModel(unittest.TestCase):
         self.assertFalse(set(m1.__dict__.items()).issubset(
             set(m2.__dict__.items())))
 
-    def test_argument_list(self):
+    def test_id_type(self):
         """
-            tests when the argument is a list
+            tests the type of id.
         """
-        m1 = BaseModel(1, "str")
-        with open('file.json') as f:
-            temp = json.load(f)
-        m1.save()
-        with open('file.json') as f:
-            temp2 = json.load(f)
-        self.assertNotEqual(temp, temp2)
+        m1 = BaseModel()
+        self.assertIsInstance(m1.id, str)
 
-    def test_argument_None(self):
+    def test_updated_at_type(self):
         """
-            tests when the argument is none
+            tests the type of id.
         """
-        temp = None
-        with self.assertRaises(TypeError):
-            m1 = BaseModel(*temp)
+        m1 = BaseModel()
+        self.assertIsInstance(m1.updated_at, datetime)
 
-    def test_kwargs_None(self):
+    def test_created_at_type(self):
         """
-            tests when the kwargs is none
+            tests the type of id.
         """
-        temp = None
-        with self.assertRaises(TypeError):
-            m1 = BaseModel(**temp)
+        m1 = BaseModel()
+        self.assertIsInstance(m1.created_at, datetime)
 
-    def test_kwargs_not_dict(self):
-        """
-            tests when the kwargs is a str
-        """
-        temp = "str"
-        with self.assertRaises(TypeError):
-            m1 = BaseModel(**temp)
