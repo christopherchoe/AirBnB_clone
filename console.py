@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
                             return ''
                         for key, val in attr_dict.items():
                             self.do_update(cl + ' ' + ide + ' ' + key + ' ' +
-                                           val)
+                                           str(val))
                         return ''
                     else:
                         par = ''
