@@ -20,7 +20,7 @@ class TestFileStorage(unittest.TestCase):
             sets up for all test_ functions.
         """
         try:
-            os.remove('file.json')
+            os.rename('file.json', 'temp.json')
         except OSError:
             pass
         with open('file.json', 'w') as f:
@@ -34,6 +34,7 @@ class TestFileStorage(unittest.TestCase):
         """
         try:
             os.remove('file.json')
+            os.rename('temp.json', 'file.json')
         except OSError:
             pass
 
