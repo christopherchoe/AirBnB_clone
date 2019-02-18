@@ -165,3 +165,39 @@ class TestBaseModel(unittest.TestCase):
         m2 = BaseModel(**testing)
         self.assertFalse(set(m1.__dict__.items()).issubset(
             set(m2.__dict__.items())))
+
+    def test_argument_list(self):
+        """
+            tests when the argument is a list
+        """
+        m1 = BaseModel(1, "str")
+        with open('file.json') as f:
+            temp = json.load(f)
+        m1.save()
+        with open('file.json') as f:
+            temp2 = json.load(f)
+        self.assertNotEqual(temp, temp2)
+
+    def test_argument_None(self):
+        """
+            tests when the argument is none
+        """
+        temp = None
+        with self.assertRaises(TypeError):
+            m1 = BaseModel(*temp)
+
+    def test_kwargs_None(self):
+        """
+            tests when the kwargs is none
+        """
+        temp = None
+        with self.assertRaises(TypeError):
+            m1 = BaseModel(**temp)
+
+    def test_kwargs_not_dict(self):
+        """
+            tests when the kwargs is a str
+        """
+        temp = "str"
+        with self.assertRaises(TypeError):
+            m1 = BaseModel(**temp)
