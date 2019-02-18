@@ -151,4 +151,4 @@ class TestBaseModel(unittest.TestCase):
         testing = {}
         m2 = BaseModel(**testing)
         self.assertFalse(set(m1.__dict__.items()).issubset(
-                        set(m2.__dict__.items())))
+            set(m2.__dict__.items())))

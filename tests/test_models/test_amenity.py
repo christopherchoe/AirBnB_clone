@@ -159,7 +159,7 @@ class TestAmenity(unittest.TestCase):
         testing = {}
         m2 = Amenity(**testing)
         self.assertFalse(set(m1.__dict__.items()).issubset(
-                        set(m2.__dict__.items())))
+            set(m2.__dict__.items())))
 
     def test_name(self):
         """
