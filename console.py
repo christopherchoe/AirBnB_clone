@@ -207,10 +207,4 @@ if __name__ == '__main__':
     from models.amenity import Amenity
     from models.review import Review
     from models import storage
-    import sys
-    if len(sys.argv) is 1:
-        HBNBCommand().cmdloop()
-    else:
-        s = ' '.join(sys.argv[1:])
-        s = HBNBCommand().precmd(s)
-        HBNBCommand().onecmd(s)
+    HBNBCommand().cmdloop()
