@@ -31,7 +31,6 @@ class BaseModel:
                 elif key != "__class__":
                     self.__dict__[key] = value
         else:
-            from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
@@ -62,7 +61,6 @@ class BaseModel:
     def save(self):
         """Updates `updated_at`."""
 
-        from models import storage
         self.updated_at = datetime.now()
         storage.save()
 
