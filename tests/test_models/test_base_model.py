@@ -2,16 +2,64 @@
 """
     Test module for BaseModel class.
 """
+import models
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 import unittest
 from datetime import datetime
 import json
+import os
 
 
 class TestBaseModel(unittest.TestCase):
     """
         test class for base_model class.
     """
+
+    def setUp(self):
+        """
+            sets up for all test_ functions.
+        """
+        try:
+            os.rename('file.json', 'temp.json')
+        except OSError:
+            pass
+        with open('file.json', 'w') as f:
+            json.dump({}, f)
+        f1 = FileStorage()
+        f1.reload()
+
+    def tearDown(self):
+        """
+            tears down for all test_ functions.
+        """
+        try:
+            os.remove('file.json')
+            os.rename('temp.json', 'file.json')
+        except OSError:
+            pass
+
+    def test_file_all_empty(self):
+        """
+            tests that FileStorage all method returns an empty dict
+            if freshly instantiated.
+        """
+        f1 = FileStorage()
+        f1.reload()
+        m1 = BaseModel()
+        all_before = models.storage.all()
+        name = "BaseModel." + m1.id
+        self.assertEqual(all_before, {name: m1})
+
+    def test_file_all_after_new(self):
+        """
+            tests that FileStorage all method returns an updated dict
+            if new method is called.
+        """
+        m2 = BaseModel()
+        models.storage.new(m2)
+        d1 = {(m2.__class__.__name__ + '.' + m2.id): m2}
+        self.assertEqual(d1, models.storage.all())
 
     def test_empty(self):
         """
@@ -22,7 +70,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_init_new(self):
         """
-            test save method and relation to file storage
+            test save method and relation to file.models.storage
         """
         m1 = BaseModel()
         with open('file.json') as f:
@@ -188,3 +236,9 @@ class TestBaseModel(unittest.TestCase):
         m1 = BaseModel()
         self.assertIsInstance(m1.created_at, datetime)
 
+    def test_models_storage_type(self):
+        """
+            tests the type of models.storage
+        """
+        m1 = BaseModel()
+        self.assertIsInstance(models.storage, FileStorage)
