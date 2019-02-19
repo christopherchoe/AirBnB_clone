@@ -6,6 +6,14 @@ import cmd
 import shlex
 import re
 import ast
+from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.state import State
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -199,12 +207,4 @@ class HBNBCommand(cmd.Cmd):
     do_EOF = do_quit
 
 if __name__ == '__main__':
-    from models.base_model import BaseModel
-    from models.user import User
-    from models.city import City
-    from models.state import State
-    from models.place import Place
-    from models.amenity import Amenity
-    from models.review import Review
-    from models import storage
     HBNBCommand().cmdloop()
