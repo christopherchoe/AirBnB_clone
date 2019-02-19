@@ -72,12 +72,12 @@ class HBNBCommand(cmd.Cmd):
             if not isinstance(clazz, type) or not issubclass(clazz, BaseModel):
                 raise NameError
             obj = clazz()
-            print(obj.id)
+            print(obj.id, file=self.stdout)
             obj.save()
         except SyntaxError:
-            print('** class name missing **')
+            print('** class name missing **', file=self.stdout)
         except NameError:
-            print('** class doesn\'t exist **')
+            print('** class doesn\'t exist **', file=self.stdout)
 
     def do_show(self, arg):
         """Displays the string representation of an instance based on class
@@ -86,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
         key_str = HBNBCommand.check_class(arg)
         if key_str is not None:
             obj = storage.all()[key_str[0]]
-            print(obj)
+            print(obj, file=self.stdout)
 
     def do_destroy(self, arg):
         """Destroys an instance based on class name and instance id:  destory
@@ -114,10 +114,10 @@ class HBNBCommand(cmd.Cmd):
                     if s[0] in key:
                         inst_list.append(val.__str__())
             except (NameError, SyntaxError):
-                print('** class doesn\'t exist **')
+                print('** class doesn\'t exist **', file=self.stdout)
                 return
 
-        print(inst_list)
+        print(inst_list, file=self.stdout)
 
     def do_update(self, arg):
         """Updates instance based on classname and id by adding/updating an
@@ -129,10 +129,10 @@ class HBNBCommand(cmd.Cmd):
         s = key_str[1]
         s_len = len(s)
         if s_len < 3:
-            print('** attribute name missing **')
+            print('** attribute name missing **', file=self.stdout)
             return
         elif s_len < 4:
-            print('** value missing **')
+            print('** value missing **', file=self.stdout)
             return
         obj = storage.all()[key_str[0]]
         attr = s[2]
@@ -158,13 +158,13 @@ class HBNBCommand(cmd.Cmd):
             if not isinstance(clazz, type) or not issubclass(clazz, BaseModel):
                 raise NameError
         except (NameError, SyntaxError):
-            print('** class doesn\'t exist **')
+            print('** class doesn\'t exist **', file=self.stdout)
             return
 
         for key in storage.all().keys():
             if arg in key:
                 count += 1
-        print(count)
+        print(count, file=self.stdout)
 
     @staticmethod
     def check_class(arg):
@@ -177,21 +177,21 @@ class HBNBCommand(cmd.Cmd):
         s = shlex.split(arg)
         slen = len(s)
         if slen is 0:
-            print('** class name missing **')
+            print('** class name missing **', file=self.stdout)
             return None
         try:
             clazz = eval(s[0])
             if not isinstance(clazz, type) or not issubclass(clazz, BaseModel):
                 raise NameError
         except (NameError, SyntaxError):
-            print('** class doesn\'t exist **')
+            print('** class doesn\'t exist **', file=self.stdout)
             return None
         if len(s) < 2:
-            print('** instance id missing **')
+            print('** instance id missing **', file=self.stdout)
             return None
         key = s[0] + '.' + s[1]
         if key not in storage.all().keys():
-            print('** no instance found **')
+            print('** no instance found **', file=self.stdout)
             return None
 
         return (key, s)
