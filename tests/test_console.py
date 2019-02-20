@@ -12,8 +12,9 @@ from models.user import User
 from unittest.mock import create_autospec
 from console import HBNBCommand
 import unittest
-import sys
 import json
+import os
+import models.engine.file_storage
 
 
 class TestConsole(unittest.TestCase):
@@ -26,6 +27,22 @@ class TestConsole(unittest.TestCase):
 
         self.mock_stdin = create_autospec(HBNBCommand().stdin)
         self.mock_stdout = create_autospec(HBNBCommand().stdout)
+
+        try:
+            os.remove('file.json')
+        except OSError:
+            pass
+
+        f1 = models.engine.file_storage.FileStorage()
+        f1.reload()
+
+    def tearDown(self):
+        """teardown for tests."""
+
+        try:
+            os.remove('file.json')
+        except OSError:
+            pass
 
     def create(self):
         """Return a console object that uses `mock_stdin` and `mock_stdout`."""
@@ -200,7 +217,8 @@ class TestConsole(unittest.TestCase):
         cli = self.create()
         s = cli.precmd("DontExist.show(")
         cli.onecmd(s)
-        self.assertEqual('*** Unknown syntax: DontExist.show(\n', self._last_write())
+        self.assertEqual('*** Unknown syntax: DontExist.show(\n',
+                         self._last_write())
 
     def test_show_9(self):
         """Test show command with valid class but invalid id"""
@@ -279,7 +297,6 @@ class TestConsole(unittest.TestCase):
     def test_all_0(self):
         """Test all command without arguments"""
         cli = self.create()
-        cli.onecmd("create User")
         cli.onecmd("create User")
         self.mock_stdout.reset_mock()
         with open('file.json') as f:
