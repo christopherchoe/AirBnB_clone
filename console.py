@@ -38,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
                 return arg
             act = act.group(1)
             if act == 'count':
-                HBNBCommand.count(cl)
+                HBNBCommand.count(self, cl)
                 return ''
             par = re.search(r'.*?\((.*)\)$', arg)
             if not par:
@@ -157,8 +157,7 @@ class HBNBCommand(cmd.Cmd):
             obj.__dict__[attr] = val
         storage.save()
 
-    @staticmethod
-    def count(arg):
+    def count(self, arg):
         """Get the number of instances of a class"""
         count = 0
         try:
