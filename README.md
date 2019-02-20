@@ -82,13 +82,15 @@ The Command Interpreter
 
 QUIT:
 
+```
 user@machine: $ ./console.py
 (hbnb) quit
 user@machine: $
-
+```
 
 HELP:
 
+```
 (hbnb) help
 
 Documented commands type help topic:
@@ -99,18 +101,62 @@ EOF  all  create  destroy  help  quit  show  update
 Prints all string representation of instances based or not on class
         name:  all BaseModel
 	    :  all
-
+```
 
 ALL:
 
+```
 (hbnb) all
-\["\[User\] (2f0b1cc8-0207-4012-a9de-e784bcc37068) {'updated_at': datetime.datetime(2019, 2, 20, 0, 29, 9, 837924), 'id': '2f0b1cc8-0207-4012-a9de-e784bcc37068', 'created_at': datetime.datetime(2019, 2, 20, 0, 29, 9, 837924)}", "\[State] (720dbe47-a8fc-4db1-9206-5ec5f932caab) {'updated_at': datetime.datetime(2019, 2, 20, 0, 29, 9, 810951), 'id': '720dbe47-a8fc-4db1-9206-5ec5f932caab', 'created_at': datetime.datetime(2019, 2, 20, 0, 29, 9, 810951)}"]
+["[User] (2f0b1cc8-0207-4012-a9de-e784bcc37068) {'updated_at': datetime.datetime(2019, 2, 20, 0, 29, 9, 837924), 'id': '2f0b1cc8-0207-4012-a9de-e784bcc37068', 'created_at': datetime.datetime(2021, 2, 20, 0, 29, 9, 837924)}", "[State] (720dbe47-a8fc-4db1-9206-5ec5f932caab) {'updated_at': datetime.datetime(2019, 2, 20, 0, 29, 9, 810951), 'id': '720dbe47-a8fc-4db1-9206-5ec5f932caab', 'created_at': datetime.datetime(2019, 2, 20, 0, 29, 9, 810951)}"]
+```
+
+CREATE:
+
+```
+(hbnb) create <class_name>
+0b08e2a1-c317-4483-a872-5fd3bb34cb00
+```
+
+DESTROY:
+
+```
+(hbnb) destroy <class_name> <id>
+```
+
+SHOW:
+
+```
+(hbnb) show <class_name> <id>
+["[<class_name>] (<id>) {'updated_at': datetim    e.datetime(2019, 2, 20, 0, 29, 9, 837924), 'id': '<id>', 'created_at': datetime.datetime(2019, 2, 20, 2, 29,     9, 837924)}"]
+```
+
+UPDATE:
+
+```
+(hbnb) update <class_name> <id> <attribute> <value>
+```
+
+NON INTERACTIVE MODE:
+
+```
+user@machine: $ echo "yourcommand and arguments" | ./console.py
+(hbnb) yourcommand results
+```
 
 ### Files
 
 ---
 File|Description
 ---|---
+console.py | command interpreter for testing and development
+models/base_model.py | Base model parent class with id, updated_at, created_at
+models/amenity.py | Amenity class inherits from base_model
+models/city.py | City class inherits from base_model
+models/state.py | State class inherits from base_model
+models/review.py | Review class inherits from base_model
+models/user.py | User class inherits from base_model
+models/engine/file_storage.py | File storage engine which will store all instances for later use.
+tests/test_models/test_engine | test heirarchy which will contain corresponding unittest for each of the classes in non tests directory.
 
 
 ## Built With
