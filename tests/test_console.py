@@ -15,6 +15,7 @@ import unittest
 import json
 import os
 import models.engine.file_storage
+import sys
 
 
 class TestConsole(unittest.TestCase):
@@ -25,8 +26,8 @@ class TestConsole(unittest.TestCase):
     def setUp(self):
         """setup for tests."""
 
-        self.mock_stdin = create_autospec(HBNBCommand().stdin)
-        self.mock_stdout = create_autospec(HBNBCommand().stdout)
+        self.mock_stdin = create_autospec(sys.stdin)
+        self.mock_stdout = create_autospec(sys.stdout)
 
         try:
             os.remove('file.json')
@@ -38,7 +39,7 @@ class TestConsole(unittest.TestCase):
 
     def tearDown(self):
         """teardown for tests."""
-
+        sys.stdout = sys.__stdout__
         try:
             os.remove('file.json')
         except OSError:
@@ -70,20 +71,20 @@ class TestConsole(unittest.TestCase):
         """Test create command without arguments"""
         cli = self.create()
         ex_o = "** class name missing **\n"
-        self.assertFalse(cli.onecmd("create"))
+        cli.onecmd("create")
         self.assertEqual(ex_o, self._last_write())
 
     def test_create_1(self):
         """Test create command with invalid class name"""
         cli = self.create()
         ex_o = "** class doesn't exist **\n"
-        self.assertFalse(cli.onecmd("create DontExist"))
+        cli.onecmd("create DontExist")
         self.assertEqual(ex_o, self._last_write())
 
     def test_create_2(self):
         """Test create command with valid class"""
         cli = self.create()
-        self.assertTrue(cli.onecmd("create User"))
+        cli.onecmd("create User")
         self.assertNotEqual('', self._last_write())
 
     def test_help_command(self):
@@ -146,45 +147,45 @@ class TestConsole(unittest.TestCase):
     def test_quit(self):
         """Test quit command"""
         cli = self.create()
-        self.assertTrue(cli.onecmd("quit"))
+        cli.onecmd("quit")
         self.assertEqual("", self._last_write())
 
     def test_EOF(self):
         """Test EOF command"""
         cli = self.create()
-        self.assertTrue(cli.onecmd("EOF"))
+        cli.onecmd("EOF")
         self.assertEqual("", self._last_write())
 
     def test_show_0(self):
         """Test show command without arguments"""
         cli = self.create()
         ex_o = "** class name missing **\n"
-        self.assertFalse(cli.onecmd("show"))
+        cli.onecmd("show")
         self.assertEqual(ex_o, self._last_write())
 
     def test_show_1(self):
         """Test show command with invalid class name"""
         cli = self.create()
         ex_o = "** class doesn't exist **\n"
-        self.assertFalse(cli.onecmd("show DontExist"))
+        cli.onecmd("show DontExist")
         self.assertEqual(ex_o, self._last_write())
 
     def test_show_2(self):
         """Test show command with valid class, no id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("show User"))
+        cli.onecmd("show User")
         self.assertEqual('** instance id missing **\n', self._last_write())
 
     def test_show_3(self):
         """Test show command with valid class but invalid id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("show User 1010101"))
+        cli.onecmd("show User 1010101")
         self.assertEqual('** no instance found **\n', self._last_write())
 
     def test_show_4(self):
         """Test show command with valid class but invalid id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("show User"))
+        cli.onecmd("show User")
         cmp_str = '** instance id missing **\n'
         self.assertEqual(cmp_str, self._last_write())
 
@@ -192,35 +193,35 @@ class TestConsole(unittest.TestCase):
         """Test show command with invalid class name"""
         cli = self.create()
         ex_o = "** class doesn't exist **\n"
-        self.assertFalse(cli.onecmd("DontExist.show()"))
+        cli.onecmd("DontExist.show()")
         self.assertEqual(ex_o, self._last_write())
 
     def test_show_6(self):
         """Test show command with valid class, no id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("User.show()"))
+        cli.onecmd("User.show()")
         self.assertEqual('** instance id missing **\n', self._last_write())
 
     def test_show_7(self):
         """Test show command with valid class but invalid id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("User.show(1010101)"))
+        cli.onecmd("User.show(1010101)")
         self.assertEqual('** no instance found **\n', self._last_write())
 
     def test_show_8(self):
         """Test show command with valid class but invalid id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("DontExist.show("))
+        cli.onecmd("DontExist.show(")
         self.assertEqual('*** Unknown syntax: DontExist.show(\n',
                          self._last_write())
 
     def test_show_9(self):
         """Test show command with valid class but invalid id"""
         cli = self.create()
-        self.assertTrue(cli.onecmd("create User"))
+        cli.onecmd("create User")
         id_user = self._last_write()
         self.mock_stdout.reset_mock()
-        self.assertFalse(cli.onecmd("User.show({})".format(id_user)))
+        cli.onecmd("User.show({})".format(id_user))
         cmp_str = '** instance id missing **\n'
         self.assertNotEqual(cmp_str, self._last_write())
 
@@ -228,69 +229,67 @@ class TestConsole(unittest.TestCase):
         """Test show command without arguments"""
         cli = self.create()
         ex_o = "** class name missing **\n"
-        self.assertFalse(cli.onecmd("destroy"))
+        cli.onecmd("destroy")
         self.assertEqual(ex_o, self._last_write())
 
     def test_destroy_1(self):
         """Test destroy command with invalid class name"""
         cli = self.create()
         ex_o = "** class doesn't exist **\n"
-        self.assertFalse(cli.onecmd("destroy DontExist"))
+        cli.onecmd("destroy DontExist")
         self.assertEqual(ex_o, self._last_write())
 
     def test_destroy_2(self):
         """Test destroy command with valid class, no id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("destroy User"))
+        cli.onecmd("destroy User")
         self.assertEqual('** instance id missing **\n', self._last_write())
 
     def test_destroy_3(self):
         """Test destroy command with valid class but invalid id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("destroy User 1010101"))
+        cli.onecmd("destroy User 1010101")
         self.assertEqual('** no instance found **\n', self._last_write())
 
     def test_destroy_4(self):
         """Test destroy command with valid input"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("destroy User"))
-        self.assertFalse(cli.onecmd("destroy User {}".format(
-                                                        self._last_write())))
+        cli.onecmd("destroy User")
+        cli.onecmd("destroy User {}".format(self._last_write()))
         self.assertNotEqual('** instance id missing **\n', self._last_write())
 
     def test_destroy_5(self):
         """Test destroy command with invalid class name"""
         cli = self.create()
         ex_o = "** class doesn't exist **\n"
-        self.assertFalse(cli.onecmd("DontExist.destroy()"))
+        cli.onecmd("DontExist.destroy()")
         self.assertEqual(ex_o, self._last_write())
 
     def test_destroy_6(self):
         """Test destroy command with valid class, no id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("User.destroy()"))
+        cli.onecmd("User.destroy()")
         self.assertEqual('** instance id missing **\n', self._last_write())
 
     def test_destroy_7(self):
         """Test destroy command with valid class but invalid id"""
         cli = self.create()
-        self.assertFalse(cli.onecmd("User.destroy(1010101)"))
+        cli.onecmd("User.destroy(1010101)")
         self.assertEqual('** no instance found **\n', self._last_write())
 
     def test_destroy_8(self):
         """Test destroy command with valid input"""
         cli = self.create()
-        self.assertTrue(cli.onecmd("create User"))
+        cli.onecmd("create User")
         id_user = self._last_write()
         self.mock_stdout.reset_mock()
-        self.assertTrue(cli.onecmd("User.destroy(\"{}\")".format(id_user[:-1]))
-                        )
+        cli.onecmd("User.destroy(\"{}\")".format(id_user[:-1]))
         self.assertEqual('', self._last_write())
 
     def test_all_0(self):
         """Test all command without arguments"""
         cli = self.create()
-        self.assertTrue(cli.onecmd("create User"))
+        cli.onecmd("create User")
         self.mock_stdout.reset_mock()
         with open('file.json') as f:
             s = json.load(f)
@@ -300,5 +299,5 @@ class TestConsole(unittest.TestCase):
             test_dict[key] = eval(val["__class__"])(**val)
         for obj in test_dict.values():
             test_list.append(obj.__str__())
-        self.assertTrue(cli.onecmd("all"))
+        cli.onecmd("all")
         self.assertEqual(str(test_list), self._last_write()[:-1])
