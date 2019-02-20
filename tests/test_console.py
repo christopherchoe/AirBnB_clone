@@ -271,9 +271,10 @@ class TestConsole(unittest.TestCase):
         cli = self.create()
         cli.onecmd("create User")
         id_user = self._last_write()
-        s = cli.precmd("User.destroy(\"{}\")".format(id_user))
+        s = cli.precmd("User.destroy(\"{}\")".format(id_user[:-1]))
+        self.mock_stdout.reset_mock()
         cli.onecmd(s)
-        self.assertEqual(id_user, self._last_write())
+        self.assertEqual('', self._last_write())
 
     def test_all_0(self):
         """Test all command without arguments"""
@@ -287,4 +288,4 @@ class TestConsole(unittest.TestCase):
         for obj in test_dict.values():
             test_list.append(obj.__str__())
         cli.onecmd("all")
-        self.assertEqual(str(test_list), self._last_write())
+        self.assertEqual(str(test_list), self._last_write()[:-1])
