@@ -63,7 +63,7 @@ class TestConsole(unittest.TestCase):
     def test_empty(self):
         """Test empty input"""
         cli = self.create()
-        self.assertTrue(cli.onecmd(""))
+        cli.onecmd("")
         self.assertEqual("", self._last_write())
 
     def test_create_0(self):
