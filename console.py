@@ -24,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """Override emptyline from Cmd."""
-        pass
+        return True
 
     def precmd(self, arg):
         """Override precmd."""
@@ -66,6 +66,11 @@ class HBNBCommand(cmd.Cmd):
         except (NameError, SyntaxError):
             return arg
 
+    def onecmd(self, arg):
+        """Override onecmd"""
+        arg = self.precmd(arg)
+        return super().onecmd(arg)
+
     def do_quit(self, arg):
         """Quit command to exit the program:  quit
         """
@@ -84,8 +89,11 @@ class HBNBCommand(cmd.Cmd):
             obj.save()
         except SyntaxError:
             print('** class name missing **', file=self.stdout)
+            return False
         except NameError:
             print('** class doesn\'t exist **', file=self.stdout)
+            return False
+        return True
 
     def do_show(self, arg):
         """Displays the string representation of an instance based on class
@@ -95,6 +103,9 @@ class HBNBCommand(cmd.Cmd):
         if key_str is not None:
             obj = storage.all()[key_str[0]]
             print(obj, file=self.stdout)
+        else:
+            return False
+        return True
 
     def do_destroy(self, arg):
         """Destroys an instance based on class name and instance id:  destory
@@ -104,6 +115,9 @@ class HBNBCommand(cmd.Cmd):
         if key_str is not None:
             del storage.all()[key_str[0]]
             storage.save()
+        else:
+            return False
+        return True
 
     def do_all(self, arg):
         """Prints all string representation of instances based or not on class
@@ -123,9 +137,10 @@ class HBNBCommand(cmd.Cmd):
                         inst_list.append(val.__str__())
             except (NameError, SyntaxError):
                 print('** class doesn\'t exist **', file=self.stdout)
-                return
+                return False
 
         print(inst_list, file=self.stdout)
+        return True
 
     def do_update(self, arg):
         """Updates instance based on classname and id by adding/updating an
@@ -133,15 +148,15 @@ class HBNBCommand(cmd.Cmd):
         """
         key_str = HBNBCommand.check_class(self, arg)
         if key_str is None:
-            return
+            return False
         s = key_str[1]
         s_len = len(s)
         if s_len < 3:
             print('** attribute name missing **', file=self.stdout)
-            return
+            return False
         elif s_len < 4:
             print('** value missing **', file=self.stdout)
-            return
+            return False
         obj = storage.all()[key_str[0]]
         attr = s[2]
         val = s[3]
@@ -156,6 +171,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             obj.__dict__[attr] = val
         storage.save()
+        return True
 
     def count(self, arg):
         """Get the number of instances of a class"""
@@ -166,12 +182,13 @@ class HBNBCommand(cmd.Cmd):
                 raise NameError
         except (NameError, SyntaxError):
             print('** class doesn\'t exist **', file=self.stdout)
-            return
+            return False
 
         for key in storage.all().keys():
             if arg in key:
                 count += 1
         print(count, file=self.stdout)
+        return True
 
     def check_class(self, arg):
         """Check if arg contains, a valid class, and id.
