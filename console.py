@@ -24,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """Override emptyline from Cmd."""
-        return True
+        pass
 
     def precmd(self, arg):
         """Override precmd."""
