@@ -279,6 +279,9 @@ class TestConsole(unittest.TestCase):
     def test_all_0(self):
         """Test all command without arguments"""
         cli = self.create()
+        cli.onecmd("create User")
+        cli.onecmd("create User")
+        self.mock_stdout.reset_mock()
         with open('file.json') as f:
             s = json.load(f)
         test_dict = {}
