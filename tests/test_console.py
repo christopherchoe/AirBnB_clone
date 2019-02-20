@@ -301,3 +301,55 @@ class TestConsole(unittest.TestCase):
             test_list.append(obj.__str__())
         cli.onecmd("all")
         self.assertEqual(str(test_list), self._last_write()[:-1])
+
+    def test_update_0(self):
+        """Test update on BaseModel with valid input"""
+        cli = self.create()
+        cli.onecmd('create BaseModel')
+        id_base = self._last_write()[:-1]
+        self.mock_stdout.reset_mock()
+        cli.onecmd('update BaseModel {} email wow'.format(id_base))
+        cli.onecmd('show BaseModel {}'.format(id_base))
+        self.assertIn("'email': 'wow'", self._last_write()[:-1])
+
+    # basemode.all()
+    # review.all()
+# user.all()
+# state.all()
+#city.all()
+#amenity.all()
+#place.all()
+#basemodel.count()
+#user.count()
+#state.count()
+#place.count()
+#city.count()
+    #amenity.count()
+#review.count()
+#basemodel.show("id")
+#state.show..
+#city.show...
+#amenity.show...
+#place.show...
+    #review.show..
+#basemodel.destroy("id")
+    #state.destroy
+#place.destroy...
+#amenity.destroy...
+#review.destroy..
+#basemodel.update("id", "attr", "string")
+    #user.update..
+#state.update
+    #city.update
+    #place.update
+    #amenity.update
+#review.update
+#basemodel.update dict
+#user.update dict
+    # state.update dict
+    #amenity.update ..
+    #city.update..
+#place.update...
+    #review.update..
+
+
