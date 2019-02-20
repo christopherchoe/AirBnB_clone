@@ -51,7 +51,7 @@ class HBNBCommand(cmd.Cmd):
                     if temp[1][0] == '{':
                         tx = re.search(r'.+,\s+(\{.*?\}).*?', par).group(1)
                         attr_dict = ast.literal_eval(tx)
-                        key_str = HBNBCommand.check_class(cl + ' ' + ide)
+                        key_str = HBNBCommand.check_class(self, cl + ' ' + ide)
                         if key_str is None:
                             return ''
                         for key, val in attr_dict.items():
@@ -91,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
         """Displays the string representation of an instance based on class
         name and instance id:  show BaseModel 1234-1234-1234
         """
-        key_str = HBNBCommand.check_class(arg)
+        key_str = HBNBCommand.check_class(self, arg)
         if key_str is not None:
             obj = storage.all()[key_str[0]]
             print(obj, file=self.stdout)
@@ -100,7 +100,7 @@ class HBNBCommand(cmd.Cmd):
         """Destroys an instance based on class name and instance id:  destory
         BaseModel 1234-1234-1234
         """
-        key_str = HBNBCommand.check_class(arg)
+        key_str = HBNBCommand.check_class(self, arg)
         if key_str is not None:
             del storage.all()[key_str[0]]
             storage.save()
@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
         """Updates instance based on classname and id by adding/updating an
         attribute
         """
-        key_str = HBNBCommand.check_class(arg)
+        key_str = HBNBCommand.check_class(self, arg)
         if key_str is None:
             return
         s = key_str[1]
@@ -174,8 +174,7 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         print(count, file=self.stdout)
 
-    @staticmethod
-    def check_class(arg):
+    def check_class(self, arg):
         """Check if arg contains, a valid class, and id.
 
         Returns:
