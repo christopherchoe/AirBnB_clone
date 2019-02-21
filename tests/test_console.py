@@ -395,6 +395,18 @@ class TestConsole(unittest.TestCase):
         cli.onecmd('{}.show({})'.format(cl, o_id))
         self.assertEqual('** no instance found **\n', self._last_write())
 
+    def test_destroy_14(self):
+        """Test destroy() with Review"""
+        cli = self.create()
+        cl = 'City'
+        cli.onecmd('create {}'.format(cl))
+        o_id = self._last_write()[:-1]
+        self.mock_stdout.reset_mock()
+        cli.onecmd('{}.destroy({})'.format(cl, o_id))
+        cli.onecmd('{}.show({})'.format(cl, o_id))
+        self.assertEqual('** no instance found **\n', self._last_write())
+
+
     def test_all_0(self):
         """Test all command without arguments"""
         cli = self.create()
