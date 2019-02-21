@@ -71,10 +71,12 @@ class TestFileStorage(unittest.TestCase):
         """
         m1 = BaseModel()
         m1.save()
+        m2 = None
         with open("file.json") as f:
             m1_json = json.load(f)
         for key, value in m1_json.items():
             m2 = BaseModel(**value)
+        self.assertIsNotNone(m2)
         self.assertEqual(m1.id, m2.id)
 
     def test_wrong_argument(self):
