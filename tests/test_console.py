@@ -28,7 +28,7 @@ class TestConsole(unittest.TestCase):
 
         self.mock_stdin = create_autospec(sys.stdin)
         self.mock_stdout = create_autospec(sys.stdout)
-
+        sys.stdout = self.mock_stdout
         try:
             os.remove('file.json')
         except OSError:
