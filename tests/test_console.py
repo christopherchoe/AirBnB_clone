@@ -406,7 +406,6 @@ class TestConsole(unittest.TestCase):
         cli.onecmd('{}.show({})'.format(cl, o_id))
         self.assertEqual('** no instance found **\n', self._last_write())
 
-
     def test_all_0(self):
         """Test all command without arguments"""
         cli = self.create()
