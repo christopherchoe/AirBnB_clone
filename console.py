@@ -23,13 +23,13 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = '(hbnb) '
 
-    def __init__(self, completekey='tab', stdin=None, stdout=None):
-        """Override __init__. Sets sys.stdout to what CLI is initilized with.
-        """
+    # def __init__(self, completekey='tab', stdin=None, stdout=None):
+    #    """Override __init__. Sets sys.stdout to what CLI is initilized with.
+    #    """
 
-        super().__init__(completekey, stdin, stdout)
-        if stdout is not None:
-            sys.stdout = stdout
+    #    super().__init__(completekey, stdin, stdout)
+    #    if stdout is not None:
+    #        sys.stdout = stdout
 
     def emptyline(self):
         """Override emptyline from Cmd."""
