@@ -113,3 +113,13 @@ class TestFileStorage(unittest.TestCase):
         all_before = f1.all()
         f1.reload()
         self.assertEqual(all_before, f1.all())
+
+    def test_file_path_value(self):
+        """Tests the value of file_path is not none"""
+        f1 = FileStorage()
+        self.assertEqual(str, type(FileStorage._FileStorage__file_path))
+
+    def test_objects_type(self):
+        """Tests the value of __objects is a dictionary"""
+        f1 = FileStorage()
+        self.assertEqual(dict, type(FileStorage._FileStorage__objects))
