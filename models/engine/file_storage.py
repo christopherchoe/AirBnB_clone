@@ -54,8 +54,8 @@ class FileStorage:
             .
         """
         try:
+            FileStorage.__objects.clear()
             with open('file.json', 'r') as f:
-                FileStorage.__objects.clear()
                 all_obj = json.load(f)
                 for key, val in all_obj.items():
                     FileStorage.__objects[key] = eval(val["__class__"])(**val)
