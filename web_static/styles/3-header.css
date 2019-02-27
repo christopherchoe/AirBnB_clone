@@ -5,7 +5,10 @@ header {
 	border-bottom: 1px solid #CCCCCC;
 }
 header div {
-	background-image: url("../images/logo.png");
-	position: absolute;
-	left: 0px;
+	background: url("../images/logo.png") no-repeat center left;
+	position: relative;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	left: 20px;
 }
