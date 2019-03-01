@@ -1,4 +1,5 @@
 body {
+	overflow-x: hidden;
 	margin: 0;
 	padding: 0;
 	color: #484848;
@@ -7,6 +8,7 @@ body {
 	height: 100vh;
 	flex-direction: column;
 	font-family: Circular,"Helvetica Neue",Helvetica, Arial, sans-serif;
+	z-index: 99;
 }
 .container {
 	max-width: 1000px;
